@@ -23,6 +23,8 @@ class _LocationScreenState extends State<LocationScreen> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: const Color(0xFF044686),
+          centerTitle: true,
+          title: const Text("CASE LOCATION"),
         ),
         body: SizedBox(
           width: double.infinity,
@@ -72,7 +74,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         style: TextStyle(color: Color(0xFF044686)),
                       ),
                       style: ElevatedButton.styleFrom(
-                          primary: Colors.white,
+                          backgroundColor: Colors.white,
                           shape: const RoundedRectangleBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(25))),

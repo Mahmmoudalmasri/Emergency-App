@@ -68,7 +68,7 @@ class _CompleteCaseState extends State<CompleteCase> {
                     SizedBox(
                       height: 7,
                     ),
-                    textField('Enter your National ID '),
+                    textField('Enter your Phone No '),
                     SizedBox(
                       height: 300,
                     ),

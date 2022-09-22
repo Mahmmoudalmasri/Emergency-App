@@ -13,13 +13,14 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  GlobalKey<FormState>? formKey;
+  // GlobalKey<FormState>? formKey;
 
-  @override
-  void initState() {
-    formKey = GlobalKey<FormState>();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   formKey = GlobalKey<FormState>();
+  //   super.initState();
+  // }
+  final _formKey = GlobalKey<FormState>();
 
   int x = 0;
   @override
@@ -95,15 +96,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 margin: EdgeInsets.symmetric(
                     vertical: 20, horizontal: size.width * 0.04),
                 child: Form(
-                  key: formKey,
+                  key: _formKey,
                   child: Column(
                     children: [
                       Constants.label("* E-mail", size.width * 0.04,
                           size.height * 0.01, size.width * 0.03),
                       TextFormField(
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                        },
                         controller: _userNameController,
                         validator: (value) {
                           if (value == null || value == "") {
@@ -114,7 +112,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                   !value.contains(".org"))) {
                             return "Invalid Email Form";
                           }
-                          return null;
                         },
                         decoration:
                             Constants.fieldsDecoration("Enter your Email"),
@@ -122,15 +119,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       Constants.label("* Password", size.width * 0.04,
                           size.height * 0.01, size.width * 0.03),
                       TextFormField(
-                        onEditingComplete: () {
-                          FocusScope.of(context).nextFocus();
-                        },
                         controller: _passwordController,
                         validator: (value) {
                           if (value == null || value == "") {
                             return "Password Field Can't be Empty";
                           }
-                          return null;
                         },
                         obscureText: true,
                         decoration:
@@ -141,7 +134,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       ElevatedButton(
                         onPressed: () async {
-                          if (formKey!.currentState!.validate()) {
+                          if (_formKey.currentState!.validate()) {
                             try {
                               final credintial = await FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
