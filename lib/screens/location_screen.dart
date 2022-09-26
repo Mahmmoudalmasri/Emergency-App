@@ -2,12 +2,17 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:location/location.dart';
 
-import 'package:emergency_app/screens/complete_case1.dart';
+import 'package:emergency_app/screens/complete_emergency_case.dart';
 
 class LocationScreen extends StatefulWidget {
-  const LocationScreen({
+  double lat;
+  double lng;
+  LocationScreen({
     Key? key,
+    required this.lat,
+    required this.lng,
   }) : super(key: key);
 
   @override
@@ -15,7 +20,15 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  Completer<GoogleMapController> _controller = Completer();
+  late LatLng currentLatLng = LatLng(widget.lat, widget.lng);
+  Location location = Location();
+  final Completer<GoogleMapController> _controller = Completer();
+
+  List<Marker> markers = [
+    // Marker(
+    //   markerId: MarkerId("Current Location"),
+    // ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -35,9 +48,25 @@ class _LocationScreenState extends State<LocationScreen> {
                 height: size.height * 0.7,
                 child: GoogleMap(
                   mapType: MapType.normal,
+                  onLongPress: (argument) {
+                    setState(() {
+                      markers = [
+                        Marker(
+                          markerId: MarkerId("Selected Location"),
+                          position:
+                              LatLng(argument.latitude, argument.longitude),
+                          infoWindow: const InfoWindow(
+                            title: 'Selected Location',
+                          ),
+                        ),
+                      ];
+                    });
+                  },
+                  markers: markers.toSet(),
+                  myLocationEnabled: true,
                   initialCameraPosition: CameraPosition(
-                    target: LatLng(37.42796133580664, -122.085749655962),
-                    zoom: 14.4746,
+                    target: currentLatLng,
+                    zoom: 14,
                   ),
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);

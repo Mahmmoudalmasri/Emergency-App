@@ -28,12 +28,12 @@ class Constants {
       children: [
         Padding(
           padding: EdgeInsets.symmetric(
-              vertical: vertPadding, horizontal: horzPadding),
+              vertical: vertPadding * 0.01, horizontal: horzPadding * 0.03),
           child: Text(
             text,
             style: TextStyle(
                 color: Constants.darkBlueColor,
-                fontSize: size,
+                fontSize: size * 0.04,
                 fontWeight: FontWeight.bold),
           ),
         ),

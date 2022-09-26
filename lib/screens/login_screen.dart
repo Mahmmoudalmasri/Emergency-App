@@ -12,24 +12,15 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  // GlobalKey<FormState>? formKey;
+var _userNameController = TextEditingController();
+var _passwordController = TextEditingController();
 
-  // @override
-  // void initState() {
-  //   formKey = GlobalKey<FormState>();
-  //   super.initState();
-  // }
+class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
 
-  int x = 0;
   @override
   Widget build(BuildContext context) {
-    x++;
-    print(x);
     var size = MediaQuery.of(context).size;
-    var _userNameController = TextEditingController();
-    var _passwordController = TextEditingController();
 
     return SafeArea(
       child: Scaffold(
@@ -40,8 +31,10 @@ class _LoginScreenState extends State<LoginScreen> {
           elevation: 0.0,
           leading: IconButton(
             icon: const Icon(FontAwesomeIcons.arrowLeft),
-            onPressed: () => Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => const HomeScreen())),
+            onPressed: () => Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (_) {
+              return const HomeScreen();
+            })),
           ),
         ),
         body: SingleChildScrollView(
@@ -99,8 +92,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Constants.label("* E-mail", size.width * 0.04,
-                          size.height * 0.01, size.width * 0.03),
+                      Constants.label(
+                          "* E-mail", size.width, size.height, size.width),
                       TextFormField(
                         controller: _userNameController,
                         validator: (value) {
@@ -116,8 +109,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         decoration:
                             Constants.fieldsDecoration("Enter your Email"),
                       ),
-                      Constants.label("* Password", size.width * 0.04,
-                          size.height * 0.01, size.width * 0.03),
+                      Constants.label(
+                          "* Password", size.width, size.height, size.width),
                       TextFormField(
                         controller: _passwordController,
                         validator: (value) {
