@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/success.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CompleteAccidentRequest extends StatefulWidget {
   const CompleteAccidentRequest({Key? key}) : super(key: key);
@@ -27,6 +29,21 @@ class _CompleteAccidentRequestState extends State<CompleteAccidentRequest> {
   final _formKey = GlobalKey<FormState>();
 
   List<String> sitOfCase = [];
+
+  addData() async {
+    CollectionReference ambRef =
+        FirebaseFirestore.instance.collection('accident');
+    ambRef.doc(_mobileController.text).set({
+      "national id": _nationalIdController.text,
+      "name": _nameController.text,
+      "age": int.parse(_ageController.text),
+      "mobile": _mobileController.text,
+      "date": DateFormat.yMMMd().format(DateTime.now()).toString(),
+      "time": DateFormat('h:mm a').format(DateTime.now()).toString(),
+      "sit of case": sitOfCase,
+      "status": false
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -313,7 +330,7 @@ class _CompleteAccidentRequestState extends State<CompleteAccidentRequest> {
                           height: size.height * 0.02,
                         ),
                         ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 if (_injuries == true ||
                                     _selfSident == true ||
@@ -321,6 +338,7 @@ class _CompleteAccidentRequestState extends State<CompleteAccidentRequest> {
                                     _threeCarsAndMore == true ||
                                     _twoCars == true ||
                                     _unknounCase == true) {
+                                  addData();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

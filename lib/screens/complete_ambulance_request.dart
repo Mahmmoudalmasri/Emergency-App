@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/location_screen.dart';
 import 'package:emergency_app/screens/success.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CompleteAmbulanceRequest extends StatefulWidget {
   const CompleteAmbulanceRequest({Key? key}) : super(key: key);
@@ -17,6 +19,21 @@ var _ageController = TextEditingController();
 var _mobileController = TextEditingController();
 
 class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
+  addData() async {
+    CollectionReference ambRef =
+        FirebaseFirestore.instance.collection('ambulance');
+    ambRef.doc(_mobileController.text).set({
+      "national id": _nationalIdController.text,
+      "name": _nameController.text,
+      "age": int.parse(_ageController.text),
+      "mobile": _mobileController.text,
+      "date": DateFormat.yMMMd().format(DateTime.now()).toString(),
+      "time": DateFormat('h:mm a').format(DateTime.now()).toString(),
+      "sit of case": sitOfCase,
+      "status": false
+    });
+  }
+
   // double maxLines = 5.0;
   bool _canWalk = false;
   bool _fainting = false;
@@ -314,7 +331,7 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                           height: size.height * 0.02,
                         ),
                         ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 if (_canWalk == true ||
                                     _clot == true ||
@@ -322,6 +339,7 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                     _specialNeeds == true ||
                                     _chronicDiseases == true ||
                                     _unknounCase == true) {
+                                  addData();
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(

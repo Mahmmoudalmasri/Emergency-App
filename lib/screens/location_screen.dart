@@ -30,6 +30,9 @@ class _LocationScreenState extends State<LocationScreen> {
     // ),
   ];
 
+  double selectedLat = 0.0;
+  double selectedLong = 0.0;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -50,11 +53,14 @@ class _LocationScreenState extends State<LocationScreen> {
                   mapType: MapType.normal,
                   onLongPress: (argument) {
                     setState(() {
+                      selectedLat = argument.latitude;
+                      selectedLong = argument.longitude;
                       markers = [
                         Marker(
                           markerId: MarkerId("Selected Location"),
                           position:
                               LatLng(argument.latitude, argument.longitude),
+                          draggable: true,
                           infoWindow: const InfoWindow(
                             title: 'Selected Location',
                           ),
@@ -66,7 +72,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   myLocationEnabled: true,
                   initialCameraPosition: CameraPosition(
                     target: currentLatLng,
-                    zoom: 14,
+                    zoom: 16,
                   ),
                   onMapCreated: (GoogleMapController controller) {
                     _controller.complete(controller);
@@ -96,7 +102,10 @@ class _LocationScreenState extends State<LocationScreen> {
                       onPressed: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const CompleteCase()),
+                            builder: (context) => CompleteCase(
+                                  lat: selectedLat,
+                                  long: selectedLong,
+                                )),
                       ),
                       child: const Text(
                         "Continue",

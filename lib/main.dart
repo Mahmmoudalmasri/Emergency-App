@@ -1,6 +1,7 @@
 import 'package:emergency_app/screens/home_screen.dart';
 import 'package:emergency_app/screens/login_screen.dart';
 import 'package:emergency_app/screens/temp_login.dart';
+import 'package:emergency_app/tracking.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
