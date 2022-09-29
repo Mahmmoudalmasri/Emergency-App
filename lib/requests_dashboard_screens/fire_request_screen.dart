@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -87,11 +88,28 @@ class _FireRequestScreenState extends State<FireRequestScreen> {
             vertical: size.height * 0.022, horizontal: size.width * 0.27));
   }
 
+  List fireData = [];
+  getData() {
+    FirebaseFirestore.instance.collection("fire").snapshots().listen((event) {
+      event.docs.forEach((element) {
+        setState(() {
+          fireData.add(element.data());
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return ListView.builder(
-      itemCount: cases.length,
+      itemCount: fireData.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: size.width * 0.02),
@@ -109,7 +127,7 @@ class _FireRequestScreenState extends State<FireRequestScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        cases[index]["name"],
+                        fireData[index]["name"],
                         style: nameStyle,
                       )
                     ],
@@ -182,35 +200,35 @@ class _FireRequestScreenState extends State<FireRequestScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${cases[index]["natID"]}",
+                            "${fireData[index]["natID"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["age"]}",
+                            "${fireData[index]["age"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["mobile"]}",
+                            "${fireData[index]["mobile"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["date"]}",
+                            "${fireData[index]["date"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["time"]}",
+                            "${fireData[index]["time"]}",
                             style: detailsStyle,
                           ),
                         ],

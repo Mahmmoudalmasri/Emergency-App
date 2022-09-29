@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 
-import 'package:emergency_app/screens/complete_emergency_case.dart';
+import 'package:emergency_app/screens/requests/complete_emergency_case.dart';
 
 class LocationScreen extends StatefulWidget {
   double lat;

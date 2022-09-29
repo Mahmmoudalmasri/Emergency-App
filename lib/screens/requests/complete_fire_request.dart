@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/success.dart';
-import 'package:emergency_app/views/text.dart';
+import 'package:emergency_app/requests_dashboard_screens/text.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 

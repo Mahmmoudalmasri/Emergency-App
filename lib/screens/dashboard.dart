@@ -1,10 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/login_screen.dart';
-import 'package:emergency_app/views/accident_request_screen.dart';
-import 'package:emergency_app/views/ambulance_request_screen.dart';
-import 'package:emergency_app/views/emeregency_cases_screen.dart';
-import 'package:emergency_app/views/emergency_case.dart';
-import 'package:emergency_app/views/fire_request_screen.dart';
+import 'package:emergency_app/requests_dashboard_screens/accident_request_screen.dart';
+import 'package:emergency_app/requests_dashboard_screens/ambulance_request_screen.dart';
+import 'package:emergency_app/requests_dashboard_screens/emergency_case.dart';
+import 'package:emergency_app/requests_dashboard_screens/fire_request_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -45,6 +45,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override

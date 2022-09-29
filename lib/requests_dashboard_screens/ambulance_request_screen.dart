@@ -1,15 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class AccidentRequestScreen extends StatefulWidget {
-  const AccidentRequestScreen({Key? key}) : super(key: key);
+class AmbulanceRequestScreen extends StatefulWidget {
+  const AmbulanceRequestScreen({Key? key}) : super(key: key);
 
   @override
-  State<AccidentRequestScreen> createState() => _AccidentRequestScreenState();
+  State<AmbulanceRequestScreen> createState() => _AmbulanceRequestScreenState();
 }
 
-class _AccidentRequestScreenState extends State<AccidentRequestScreen> {
+class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
   List<Map> cases = [
     {
       "name": "Mahmmoud Haitham Mohammad Salem",
@@ -87,11 +88,35 @@ class _AccidentRequestScreenState extends State<AccidentRequestScreen> {
             vertical: size.height * 0.022, horizontal: size.width * 0.27));
   }
 
+  bool ambulanceCheck = false;
+  bool fireCheck = false;
+  bool trafficCheck = false;
+
+  List ambulanceData = [];
+  getData() {
+    FirebaseFirestore.instance
+        .collection("ambulance")
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        setState(() {
+          ambulanceData.add(element.data());
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return ListView.builder(
-      itemCount: cases.length,
+      itemCount: ambulanceData.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: size.width * 0.02),
@@ -109,7 +134,7 @@ class _AccidentRequestScreenState extends State<AccidentRequestScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        cases[index]["name"],
+                        ambulanceData[index]["name"],
                         style: nameStyle,
                       )
                     ],
@@ -182,35 +207,35 @@ class _AccidentRequestScreenState extends State<AccidentRequestScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${cases[index]["natID"]}",
+                            "${ambulanceData[index]["natID"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["age"]}",
+                            "${ambulanceData[index]["age"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["mobile"]}",
+                            "${ambulanceData[index]["mobile"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["date"]}",
+                            "${ambulanceData[index]["date"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["time"]}",
+                            "${ambulanceData[index]["time"]}",
                             style: detailsStyle,
                           ),
                         ],
@@ -267,6 +292,9 @@ class _AccidentRequestScreenState extends State<AccidentRequestScreen> {
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold),
                                           ),
+                                          SizedBox(
+                                            height: size.height * 0.04,
+                                          ),
                                           Container(
                                             width: size.width,
                                             height: size.height * 0.3,
@@ -277,8 +305,7 @@ class _AccidentRequestScreenState extends State<AccidentRequestScreen> {
                                           ),
                                           ElevatedButton(
                                             onPressed: () {},
-                                            child: const Text(
-                                                "SEND TRAFFIC CONTROL"),
+                                            child: const Text("SEND AMBULANCE"),
                                             style: redButton(context),
                                           ),
                                         ],

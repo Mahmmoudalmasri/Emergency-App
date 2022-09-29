@@ -1,7 +1,7 @@
 import 'package:emergency_app/constants.dart';
-import 'package:emergency_app/screens/complete_accident_request.dart';
-import 'package:emergency_app/screens/complete_ambulance_request.dart';
-import 'package:emergency_app/screens/complete_fire_request.dart';
+import 'package:emergency_app/screens/requests/complete_accident_request.dart';
+import 'package:emergency_app/screens/requests/complete_ambulance_request.dart';
+import 'package:emergency_app/screens/requests/complete_fire_request.dart';
 import 'package:emergency_app/screens/location_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';

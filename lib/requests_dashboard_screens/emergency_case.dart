@@ -1,9 +1,11 @@
-import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class EmergencyCase extends StatefulWidget {
-  const EmergencyCase({Key? key}) : super(key: key);
+  const EmergencyCase({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<EmergencyCase> createState() => _EmergencyCaseState();
@@ -70,7 +72,7 @@ class _EmergencyCaseState extends State<EmergencyCase> {
   ButtonStyle redButton(BuildContext ctx) {
     var size = MediaQuery.of(ctx).size;
     return ElevatedButton.styleFrom(
-        primary: const Color(0xFFE00508),
+        backgroundColor: const Color(0xFFE00508),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25))),
         padding: EdgeInsets.symmetric(
@@ -80,11 +82,31 @@ class _EmergencyCaseState extends State<EmergencyCase> {
   ButtonStyle greyButton(BuildContext ctx) {
     var size = MediaQuery.of(ctx).size;
     return ElevatedButton.styleFrom(
-        primary: const Color(0xFFC1C1C1),
+        backgroundColor: const Color(0xFFC1C1C1),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25))),
         padding: EdgeInsets.symmetric(
             vertical: size.height * 0.022, horizontal: size.width * 0.27));
+  }
+
+  List emergencyData = [];
+  getData() {
+    FirebaseFirestore.instance
+        .collection("emergency")
+        .snapshots()
+        .listen((event) {
+      event.docs.forEach((element) {
+        setState(() {
+          emergencyData.add(element.data());
+        });
+      });
+    });
+  }
+
+  @override
+  void initState() {
+    getData();
+    super.initState();
   }
 
   bool ambulanceCheck = false;
@@ -95,7 +117,7 @@ class _EmergencyCaseState extends State<EmergencyCase> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return ListView.builder(
-      itemCount: cases.length,
+      itemCount: emergencyData.length,
       itemBuilder: (context, index) {
         return Padding(
           padding: EdgeInsets.symmetric(vertical: size.width * 0.02),
@@ -113,7 +135,7 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        cases[index]["name"],
+                        emergencyData[index]["mobile"],
                         style: nameStyle,
                       )
                     ],
@@ -144,20 +166,6 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "National ID:",
-                                    style: detailsStyle,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
-                                    "Age:",
-                                    style: detailsStyle,
-                                  ),
-                                  const SizedBox(
-                                    height: 10,
-                                  ),
-                                  Text(
                                     "Mobile:",
                                     style: detailsStyle,
                                   ),
@@ -186,35 +194,21 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${cases[index]["natID"]}",
+                            "${emergencyData[index]["mobile"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["age"]}",
+                            "${emergencyData[index]["date"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "${cases[index]["mobile"]}",
-                            style: detailsStyle,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "${cases[index]["date"]}",
-                            style: detailsStyle,
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "${cases[index]["time"]}",
+                            "${emergencyData[index]["time"]}",
                             style: detailsStyle,
                           ),
                         ],
@@ -224,7 +218,7 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                           Icon(
                             Icons.check,
                             size: 60,
-                            color: cases[index]["status"]
+                            color: emergencyData[index]["status"]
                                 ? const Color(0xFF044686)
                                 : const Color(0xFFC1C1C1),
                           ),
@@ -237,7 +231,7 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                   ),
                   StatefulBuilder(
                     builder: (context, setState) => ElevatedButton(
-                      onPressed: cases[index]["status"]
+                      onPressed: emergencyData[index]["status"]
                           ? null
                           : () {
                               showDialog(
@@ -384,7 +378,7 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                         "TAKE ACTION",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      style: cases[index]["status"]
+                      style: emergencyData[index]["status"]
                           ? greyButton(context)
                           : redButton(context),
                     ),
