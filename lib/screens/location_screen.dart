@@ -1,18 +1,21 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-
 import 'package:emergency_app/screens/requests/complete_emergency_case.dart';
 
+// ignore: must_be_immutable
 class LocationScreen extends StatefulWidget {
   double lat;
   double lng;
+  List centerLocations;
   LocationScreen({
     Key? key,
     required this.lat,
     required this.lng,
+    required this.centerLocations,
   }) : super(key: key);
 
   @override
@@ -24,14 +27,47 @@ class _LocationScreenState extends State<LocationScreen> {
   Location location = Location();
   final Completer<GoogleMapController> _controller = Completer();
 
-  List<Marker> markers = [
-    // Marker(
-    //   markerId: MarkerId("Current Location"),
-    // ),
-  ];
+  List<Marker> markers = [];
 
   double selectedLat = 0.0;
   double selectedLong = 0.0;
+  double sourceLat = 0.0;
+  double sourcelong = 0.0;
+  List<dynamic> shortetSource = [];
+
+  shortestLocation(double distLat, double distlong) {
+    var p = 0.017453292519943295;
+    int index = 0;
+    var temp = 0.0;
+    var min = 12742 *
+        asin(sqrt(0.5 -
+            cos((distLat - widget.centerLocations[0]['latitude']) * p) / 2 +
+            cos(distLat * p) *
+                cos(widget.centerLocations[0]['latitude'] * p) *
+                (1 -
+                    cos((widget.centerLocations[0]['longitude'] - distlong) *
+                        p)) /
+                2));
+
+    for (int i = 0; i < widget.centerLocations.length; i++) {
+      temp = 12742 *
+          asin(sqrt(0.5 -
+              cos((distLat - widget.centerLocations[i]['latitude']) * p) / 2 +
+              cos(distLat * p) *
+                  cos(widget.centerLocations[i]['latitude'] * p) *
+                  (1 -
+                      cos((widget.centerLocations[i]['longitude'] - distlong) *
+                          p)) /
+                  2));
+      if (temp < min) {
+        setState(() {
+          min = temp;
+          index = i;
+        });
+      }
+    }
+    shortetSource.add(widget.centerLocations[index]);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +93,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       selectedLong = argument.longitude;
                       markers = [
                         Marker(
-                          markerId: MarkerId("Selected Location"),
+                          markerId: const MarkerId("Selected Location"),
                           position:
                               LatLng(argument.latitude, argument.longitude),
                           draggable: true,
@@ -66,6 +102,8 @@ class _LocationScreenState extends State<LocationScreen> {
                           ),
                         ),
                       ];
+
+                      shortestLocation(argument.latitude, argument.longitude);
                     });
                   },
                   markers: markers.toSet(),
@@ -105,6 +143,7 @@ class _LocationScreenState extends State<LocationScreen> {
                             builder: (context) => CompleteCase(
                                   lat: selectedLat,
                                   long: selectedLong,
+                                  sourceLocation: shortetSource,
                                 )),
                       ),
                       child: const Text(

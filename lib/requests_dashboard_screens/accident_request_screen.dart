@@ -92,6 +92,7 @@ class _AccidentRequestScreenState extends State<AccidentRequestScreen> {
   getData() {
     FirebaseFirestore.instance
         .collection("accident")
+        .orderBy("date", descending: true)
         .snapshots()
         .listen((event) {
       event.docs.forEach((element) {

@@ -90,7 +90,11 @@ class _FireRequestScreenState extends State<FireRequestScreen> {
 
   List fireData = [];
   getData() {
-    FirebaseFirestore.instance.collection("fire").snapshots().listen((event) {
+    FirebaseFirestore.instance
+        .collection("fire")
+        .orderBy("date", descending: true)
+        .snapshots()
+        .listen((event) {
       event.docs.forEach((element) {
         setState(() {
           fireData.add(element.data());

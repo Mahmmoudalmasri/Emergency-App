@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/requests/complete_accident_request.dart';
 import 'package:emergency_app/screens/requests/complete_ambulance_request.dart';
@@ -21,6 +22,17 @@ class _HomeScreenState extends State<HomeScreen> {
   late PermissionStatus _permissionGranted;
   static LocationData? _location;
   bool got = false;
+  List centerLocations = [];
+
+  getData() {
+    FirebaseFirestore.instance.collection("centers locations").get().then(
+      (value) {
+        value.docs.forEach((element) {
+          centerLocations.add(element.data());
+        });
+      },
+    );
+  }
 
   Future<void> checkLocationService() async {
     Location location = Location();
@@ -94,6 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     checkLocationService();
+    getData();
   }
 
   @override
@@ -332,15 +345,16 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                             child: GestureDetector(
                               onTap: () async {
-                                var alt = await _location!.latitude as double;
+                                var lat = await _location!.latitude as double;
                                 var lng = await _location!.longitude as double;
 
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => LocationScreen(
-                                            lat: alt,
+                                            lat: lat,
                                             lng: lng,
+                                            centerLocations: centerLocations,
                                           )),
                                 );
                               },

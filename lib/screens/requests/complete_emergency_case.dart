@@ -1,18 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/success.dart';
 
+// ignore: must_be_immutable
 class CompleteCase extends StatefulWidget {
   double lat;
   double long;
+  List sourceLocation;
   CompleteCase({
     Key? key,
     required this.lat,
     required this.long,
+    required this.sourceLocation,
   }) : super(key: key);
 
   @override
@@ -29,8 +31,10 @@ class _CompleteCaseState extends State<CompleteCase> {
         FirebaseFirestore.instance.collection('emergency');
     ambRef.doc(_mobileNoController.text).set({
       "mobile": _mobileNoController.text,
-      "longitude": widget.long,
-      "latitude": widget.lat,
+      "sourceLatitude": widget.sourceLocation[0]['latitude'],
+      "sourceLongitude": widget.sourceLocation[0]['longitude'],
+      "distanceLongitude": widget.long,
+      "distanceLatitude": widget.lat,
       "date": DateFormat.yMMMd().format(DateTime.now()).toString(),
       "time": DateFormat('h:mm a').format(DateTime.now()).toString(),
       "status": false
@@ -118,7 +122,7 @@ class _CompleteCaseState extends State<CompleteCase> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => Success(),
+                                  builder: (context) => const Success(),
                                 ),
                               );
                               setState(() {

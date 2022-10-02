@@ -93,9 +93,11 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
   bool trafficCheck = false;
 
   List ambulanceData = [];
+
   getData() {
     FirebaseFirestore.instance
         .collection("ambulance")
+        .orderBy("date", descending: true)
         .snapshots()
         .listen((event) {
       event.docs.forEach((element) {
@@ -207,7 +209,7 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "${ambulanceData[index]["natID"]}",
+                            "${ambulanceData[index]["national id"]}",
                             style: detailsStyle,
                           ),
                           const SizedBox(
