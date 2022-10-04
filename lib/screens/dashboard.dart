@@ -1,10 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/login_screen.dart';
 import 'package:emergency_app/requests_dashboard_screens/accident_request_screen.dart';
 import 'package:emergency_app/requests_dashboard_screens/ambulance_request_screen.dart';
 import 'package:emergency_app/requests_dashboard_screens/emergency_case.dart';
 import 'package:emergency_app/requests_dashboard_screens/fire_request_screen.dart';
+import 'package:emergency_app/translations/locale_keys.g.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -21,19 +22,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   List<Map> screens = [
     {
-      "title": "Emergency Case",
+      "title": LocaleKeys.dash_title_emergency.tr(),
       "body": EmergencyCase(),
     },
     {
-      "title": "Ambulance Requests",
+      "title": LocaleKeys.dash_amb_req.tr(),
       "body": AmbulanceRequestScreen(),
     },
     {
-      "title": "Fire Requests",
+      "title": LocaleKeys.dash_fire_req.tr(),
       "body": FireRequestScreen(),
     },
     {
-      "title": "Accident Requests",
+      "title": LocaleKeys.dash_acc_req.tr(),
       "body": AccidentRequestScreen(),
     }
   ];
@@ -66,7 +67,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
           actions: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15),
+              padding: const EdgeInsets.symmetric(horizontal: 15),
               child: IconButton(
                   icon: const Icon(Icons.logout),
                   color: Colors.white,
@@ -79,7 +80,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                   builder: (context) => const LoginScreen()),
                             ),
                           );
-                      print("signed out");
                     } on FirebaseAuthException catch (e) {
                       SnackBar snackBar = SnackBar(
                         content: Text(
@@ -122,7 +122,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         ),
         backgroundColor: const Color(0xFFF4F4F4),
         body: Padding(
-          padding: EdgeInsets.all(18.0),
+          padding: const EdgeInsets.all(18.0),
           child: screens[_selectedIndex]["body"],
         ),
       ),

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/requests/complete_accident_request.dart';
 import 'package:emergency_app/screens/requests/complete_ambulance_request.dart';
 import 'package:emergency_app/screens/requests/complete_fire_request.dart';
 import 'package:emergency_app/screens/location_screen.dart';
+import 'package:emergency_app/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:location/location.dart';
@@ -19,6 +21,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late bool _serviceEnabled;
+  bool lang = false;
   late PermissionStatus _permissionGranted;
   static LocationData? _location;
   bool got = false;
@@ -141,11 +144,28 @@ class _HomeScreenState extends State<HomeScreen> {
                               "LOGIN",
                               style: TextStyle(color: Colors.grey.shade300),
                             ),
-                          )
+                          ),
+                          TextButton(
+                              onPressed: () async {
+                                setState(() {
+                                  lang = !lang;
+                                });
+                                if (lang == false) {
+                                  await context.setLocale(Locale('en'));
+                                } else {
+                                  await context.setLocale(Locale('ar'));
+                                }
+                              },
+                              child: Text(
+                                context.locale == Locale('ar') ? "En" : "Ar",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Constants.redColor),
+                              )),
                         ],
                       ),
                       Text(
-                        "Always ready.. \n        Anywhere and Anytime",
+                        "${LocaleKeys.slogen.tr()} \n        ${LocaleKeys.slogen1.tr()}",
                         style: TextStyle(
                           color: Constants.darkBlueColor,
                           fontWeight: FontWeight.bold,
@@ -176,7 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: size.width * 0.1,
                           ),
                           title: Text(
-                            "AMBULANCE",
+                            LocaleKeys.home_amb.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Constants.darkBlueColor,
@@ -187,7 +207,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               vertical: size.width * 0.02,
                               horizontal: size.width * 0.05),
                           subtitle: Text(
-                            "Ask for Paramedic",
+                            LocaleKeys.home_amb_sub.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Constants.darkBlueColor,
@@ -195,7 +215,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: size.width * 0.03),
                           ),
                           trailing: Icon(
-                            FontAwesomeIcons.arrowRight,
+                            context.locale == Locale('ar')
+                                ? FontAwesomeIcons.arrowLeft
+                                : FontAwesomeIcons.arrowRight,
                             color: Constants.darkBlueColor,
                             size: size.width * 0.07,
                           ),
@@ -226,7 +248,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: size.width * 0.1,
                           ),
                           title: Text(
-                            "FIRE",
+                            LocaleKeys.home_fire.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Constants.redColor,
@@ -237,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               vertical: size.width * 0.02,
                               horizontal: size.width * 0.05),
                           subtitle: Text(
-                            "Ask for FireFighters",
+                            LocaleKeys.home_fire_sub.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Constants.redColor,
@@ -245,7 +267,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: size.width * 0.03),
                           ),
                           trailing: Icon(
-                            FontAwesomeIcons.arrowRight,
+                            context.locale == Locale('ar')
+                                ? FontAwesomeIcons.arrowLeft
+                                : FontAwesomeIcons.arrowRight,
                             color: Constants.redColor,
                             size: size.width * 0.07,
                           ),
@@ -278,7 +302,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             size: size.width * 0.1,
                           ),
                           title: Text(
-                            "ACCIDENT",
+                            LocaleKeys.home_accident.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Constants.orangeColor,
@@ -289,7 +313,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               vertical: size.width * 0.02,
                               horizontal: size.width * 0.05),
                           subtitle: Text(
-                            "Ask for Traffic Control",
+                            LocaleKeys.home_accident_sub.tr(),
                             textAlign: TextAlign.center,
                             style: TextStyle(
                                 color: Constants.orangeColor,
@@ -297,7 +321,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontSize: size.width * 0.03),
                           ),
                           trailing: Icon(
-                            FontAwesomeIcons.arrowRight,
+                            context.locale == Locale('ar')
+                                ? FontAwesomeIcons.arrowLeft
+                                : FontAwesomeIcons.arrowRight,
                             color: Constants.orangeColor,
                             size: size.width * 0.07,
                           ),
@@ -368,7 +394,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                                 child: Center(
                                     child: Text(
-                                  "EMERGENCY\nCASE",
+                                  LocaleKeys.home_emergency.tr(),
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                       color: Colors.white,

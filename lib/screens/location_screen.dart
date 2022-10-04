@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:easy_localization/easy_localization.dart';
+import 'package:emergency_app/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
@@ -76,7 +78,7 @@ class _LocationScreenState extends State<LocationScreen> {
         appBar: AppBar(
           backgroundColor: const Color(0xFF044686),
           centerTitle: true,
-          title: const Text("CASE LOCATION"),
+          title: Text(LocaleKeys.case_location.tr()),
         ),
         body: SizedBox(
           width: double.infinity,
@@ -126,40 +128,42 @@ class _LocationScreenState extends State<LocationScreen> {
                     borderRadius: BorderRadius.only(
                         topRight: Radius.circular(20),
                         topLeft: Radius.circular(20))),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      "Please set the correct address to arrive in record time",
-                      style: TextStyle(color: Colors.white),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    ElevatedButton(
-                      onPressed: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => CompleteCase(
-                                  lat: selectedLat,
-                                  long: selectedLong,
-                                  sourceLocation: shortetSource,
-                                )),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        LocaleKeys.location_text.tr(),
+                        style: const TextStyle(color: Colors.white),
                       ),
-                      child: const Text(
-                        "Continue",
-                        style: TextStyle(color: Color(0xFF044686)),
+                      const SizedBox(
+                        height: 10,
                       ),
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          shape: const RoundedRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25))),
-                          padding: EdgeInsets.symmetric(
-                              vertical: size.width * 0.04,
-                              horizontal: size.width * 0.3)),
-                    ),
-                  ],
+                      ElevatedButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CompleteCase(
+                                    lat: selectedLat,
+                                    long: selectedLong,
+                                    sourceLocation: shortetSource,
+                                  )),
+                        ),
+                        child: Text(
+                          LocaleKeys.submit_btn.tr(),
+                          style: const TextStyle(color: Color(0xFF044686)),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25))),
+                            padding: EdgeInsets.symmetric(
+                                vertical: size.width * 0.04,
+                                horizontal: size.width * 0.3)),
+                      ),
+                    ],
+                  ),
                 ),
               )
             ],

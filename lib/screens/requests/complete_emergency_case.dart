@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/success.dart';
+
+import '../../translations/locale_keys.g.dart';
 
 // ignore: must_be_immutable
 class CompleteCase extends StatefulWidget {
@@ -49,9 +52,9 @@ class _CompleteCaseState extends State<CompleteCase> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue.shade900,
-        title: const Text(
-          'Accident Request',
-          style: TextStyle(
+        title: Text(
+          LocaleKeys.title_emergency_req.tr(),
+          style: const TextStyle(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
@@ -81,7 +84,7 @@ class _CompleteCaseState extends State<CompleteCase> {
                     ],
                   ),
                   child: Text(
-                    "By submitting this form, you confirm that the information entered is correct and any false information exspose you to legal accoutability.",
+                    LocaleKeys.req_agree.tr(),
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: Colors.white,
@@ -96,19 +99,19 @@ class _CompleteCaseState extends State<CompleteCase> {
                   child: Form(
                     key: _formKey,
                     child: Column(children: [
-                      Constants.label(
-                          "Mobile", size.width, size.height, size.width),
+                      Constants.label(LocaleKeys.mobile.tr(), size.width,
+                          size.height, size.width),
                       TextFormField(
                         keyboardType: TextInputType.number,
                         controller: _mobileNoController,
-                        decoration:
-                            Constants.fieldsDecoration("Enter Mobile No"),
+                        decoration: Constants.fieldsDecoration(
+                            LocaleKeys.hint_mobile.tr()),
                         validator: (value) {
                           if (value!.isEmpty || value == null || value == "") {
-                            return "Mobile number is required";
+                            return LocaleKeys.e_empty.tr();
                           }
                           if (value.length < 9) {
-                            return "Enter valid mobile no";
+                            return LocaleKeys.e_mobile.tr();
                           }
                         },
                       ),
@@ -130,7 +133,7 @@ class _CompleteCaseState extends State<CompleteCase> {
                               });
                             }
                           },
-                          child: const Text("SUBMIT"),
+                          child: Text(LocaleKeys.submit_btn.tr()),
                           style: Constants.redButtonStyles(
                               size.height * 0.022, size.width * 0.36)),
                     ]),

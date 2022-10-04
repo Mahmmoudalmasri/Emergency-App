@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/success.dart';
-import 'package:emergency_app/requests_dashboard_screens/text.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+
+import '../../translations/locale_keys.g.dart';
 
 class CompleteFireRequest extends StatefulWidget {
   const CompleteFireRequest({Key? key}) : super(key: key);
@@ -52,9 +53,9 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue.shade900,
-        title: const Text(
-          'Accident Request',
-          style: TextStyle(
+        title: Text(
+          LocaleKeys.title_fire_req.tr(),
+          style: const TextStyle(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
@@ -83,7 +84,7 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                     ],
                   ),
                   child: Text(
-                    "By submitting this form, you confirm that the information entered is correct and any false information exspose you to legal accoutability.",
+                    LocaleKeys.req_agree.tr(),
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: Colors.white,
@@ -98,70 +99,70 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        Constants.label(
-                            "National ID", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.natID.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _nationalIdController,
                           keyboardType: TextInputType.number,
-                          decoration:
-                              Constants.fieldsDecoration("Enter National ID"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_natId.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label(
-                            "Full Name", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.full_name.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _nameController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Name is required";
+                              return LocaleKeys.e_empty.tr();
                             }
                           },
                           keyboardType: TextInputType.text,
-                          decoration:
-                              Constants.fieldsDecoration("Enter Full Name"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_name.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label(
-                            "Age", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.age.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _ageController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Age is required";
+                              return LocaleKeys.e_empty.tr();
                             } else if (int.parse(value) < 18) {
-                              return "you are under age";
+                              return LocaleKeys.e_age.tr();
                             }
                           },
                           keyboardType: TextInputType.number,
-                          decoration:
-                              Constants.fieldsDecoration("Enter Your Age"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_age.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label(
-                            "Mobile", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.mobile.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _mobileController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Mobile is required";
+                              return LocaleKeys.e_empty.tr();
                             } else if (value.length < 9) {
-                              return "Enter valid mobile no";
+                              return LocaleKeys.e_mobile.tr();
                             }
                           },
                           keyboardType: TextInputType.number,
-                          decoration:
-                              Constants.fieldsDecoration("Enter Mobile No"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_mobile.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label("Situation of Case", size.width,
+                        Constants.label(LocaleKeys.sit_case.tr(), size.width,
                             size.height, size.width),
                         Container(
                           padding: EdgeInsets.all(size.width * 0.03),
@@ -187,13 +188,14 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ChoiceChip(
-                                      label: const Text("Store"),
+                                      label: Text(LocaleKeys.store.tr()),
                                       selected: _store,
                                       onSelected: (value) {
                                         setState(() {
                                           _store = value;
                                           if (_store) {
-                                            sitOfCase.add("Store");
+                                            sitOfCase
+                                                .add(LocaleKeys.store.tr());
                                           }
                                         });
                                       },
@@ -209,13 +211,14 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                       width: size.width * 0.015,
                                     ),
                                     ChoiceChip(
-                                      label: const Text("House"),
+                                      label: Text(LocaleKeys.house.tr()),
                                       selected: _house,
                                       onSelected: (value) {
                                         setState(() {
                                           _house = value;
                                           if (_house) {
-                                            sitOfCase.add("House");
+                                            sitOfCase
+                                                .add(LocaleKeys.house.tr());
                                           }
                                         });
                                       },
@@ -233,13 +236,15 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ChoiceChip(
-                                      label: const Text("Injuries"),
+                                      label: Text(LocaleKeys.injuries.tr()),
                                       selected: _injuries,
                                       onSelected: (value) {
                                         setState(() {
                                           _injuries = value;
-                                          if (_injuries)
-                                            sitOfCase.add("Injuries");
+                                          if (_injuries) {
+                                            sitOfCase
+                                                .add(LocaleKeys.injuries.tr());
+                                          }
                                         });
                                       },
                                       selectedColor: Constants.blueColor,
@@ -254,13 +259,15 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                       width: size.width * 0.015,
                                     ),
                                     ChoiceChip(
-                                      label: const Text("Burning Weeds"),
+                                      label:
+                                          Text(LocaleKeys.burning_weeds.tr()),
                                       selected: _burningWeeds,
                                       onSelected: (value) {
                                         setState(() {
                                           _burningWeeds = value;
                                           if (_burningWeeds) {
-                                            sitOfCase.add("Burning Weeds");
+                                            sitOfCase.add(
+                                                LocaleKeys.burning_weeds.tr());
                                           }
                                         });
                                       },
@@ -276,13 +283,15 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                       width: size.width * 0.015,
                                     ),
                                     ChoiceChip(
-                                      label: const Text("Small Area"),
+                                      label: Text(LocaleKeys.small_area.tr()),
                                       selected: _smallArea,
                                       onSelected: (value) {
                                         setState(() {
                                           _smallArea = value;
-                                          if (_smallArea)
-                                            sitOfCase.add("Small Area");
+                                          if (_smallArea) {
+                                            sitOfCase.add(
+                                                LocaleKeys.small_area.tr());
+                                          }
                                         });
                                       },
                                       selectedColor: Constants.blueColor,
@@ -299,13 +308,15 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ChoiceChip(
-                                      label: const Text("Large Area"),
+                                      label: Text(LocaleKeys.large_area.tr()),
                                       selected: _largeArea,
                                       onSelected: (value) {
                                         setState(() {
                                           _largeArea = value;
-                                          if (_largeArea)
-                                            sitOfCase.add("Larg Area");
+                                          if (_largeArea) {
+                                            sitOfCase.add(
+                                                LocaleKeys.large_area.tr());
+                                          }
                                         });
                                       },
                                       selectedColor: Constants.blueColor,
@@ -320,14 +331,14 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                       width: size.width * 0.015,
                                     ),
                                     ChoiceChip(
-                                      label:
-                                          const Text("CAN'T DIAGNOSE THE CASE"),
+                                      label: Text(LocaleKeys.unknown.tr()),
                                       selected: _unknounCase,
                                       onSelected: (value) {
                                         setState(() {
                                           _unknounCase = value;
                                           if (_unknounCase) {
-                                            sitOfCase.add("Can't Diagnose");
+                                            sitOfCase
+                                                .add(LocaleKeys.unknown.tr());
                                           }
                                         });
                                       },
@@ -362,17 +373,17 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Success()),
+                                        builder: (context) => const Success()),
                                   );
                                 } else {
-                                  SnackBar snackBar = const SnackBar(
+                                  SnackBar snackBar = SnackBar(
                                     content: Text(
-                                      " You must choose at least one situation of case",
-                                      style: TextStyle(
+                                      LocaleKeys.e_sit.tr(),
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    duration: Duration(seconds: 4),
+                                    duration: const Duration(seconds: 4),
                                     elevation: 3,
                                     backgroundColor: Constants.redColor,
                                   );
@@ -381,7 +392,7 @@ class _CompleteFireRequestState extends State<CompleteFireRequest> {
                                 }
                               }
                             },
-                            child: const Text("SUBMIT"),
+                            child: Text(LocaleKeys.submit_btn.tr()),
                             style: Constants.redButtonStyles(
                                 size.height * 0.022, size.width * 0.36)),
                       ],

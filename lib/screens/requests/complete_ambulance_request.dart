@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:emergency_app/constants.dart';
-import 'package:emergency_app/screens/location_screen.dart';
 import 'package:emergency_app/screens/success.dart';
+import 'package:emergency_app/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class CompleteAmbulanceRequest extends StatefulWidget {
   const CompleteAmbulanceRequest({Key? key}) : super(key: key);
@@ -19,7 +19,6 @@ var _ageController = TextEditingController();
 var _mobileController = TextEditingController();
 
 class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
-  
   addData() async {
     CollectionReference ambRef =
         FirebaseFirestore.instance.collection('ambulance');
@@ -54,9 +53,9 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: Colors.blue.shade900,
-        title: const Text(
-          'Ambulance Request',
-          style: TextStyle(
+        title: Text(
+          LocaleKeys.title_amb_req.tr(),
+          style: const TextStyle(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
         ),
       ),
@@ -85,7 +84,7 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                     ],
                   ),
                   child: Text(
-                    "By submitting this form, you confirm that the information entered is correct and any false information exspose you to legal accoutability.",
+                    LocaleKeys.req_agree.tr(),
                     textAlign: TextAlign.start,
                     style: TextStyle(
                         color: Colors.white,
@@ -100,70 +99,70 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                     key: _formKey,
                     child: Column(
                       children: [
-                        Constants.label(
-                            "National ID", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.natID.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _nationalIdController,
                           keyboardType: TextInputType.number,
-                          decoration:
-                              Constants.fieldsDecoration("Enter National ID"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_natId.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label(
-                            "Full Name", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.full_name.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _nameController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Name is required";
+                              return LocaleKeys.e_empty.tr();
                             }
                           },
                           keyboardType: TextInputType.text,
-                          decoration:
-                              Constants.fieldsDecoration("Enter Full Name"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_name.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label(
-                            "Age", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.age.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _ageController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Age is required";
+                              return LocaleKeys.e_empty.tr();
                             } else if (int.parse(value) < 18) {
-                              return "you are under age";
+                              return LocaleKeys.e_age.tr();
                             }
                           },
                           keyboardType: TextInputType.number,
-                          decoration:
-                              Constants.fieldsDecoration("Enter Your Age"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_age.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label(
-                            "Mobile", size.width, size.height, size.width),
+                        Constants.label(LocaleKeys.mobile.tr(), size.width,
+                            size.height, size.width),
                         TextFormField(
                           controller: _mobileController,
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return "Mobile is required";
+                              return LocaleKeys.e_empty.tr();
                             } else if (value.length < 9) {
-                              return "Enter valid mobile no";
+                              return LocaleKeys.e_mobile.tr();
                             }
                           },
                           keyboardType: TextInputType.number,
-                          decoration:
-                              Constants.fieldsDecoration("Enter Mobile No"),
+                          decoration: Constants.fieldsDecoration(
+                              LocaleKeys.hint_mobile.tr()),
                         ),
                         SizedBox(
                           height: size.height * 0.01,
                         ),
-                        Constants.label("Situation of Case", size.width,
+                        Constants.label(LocaleKeys.sit_case.tr(), size.width,
                             size.height, size.width),
                         Container(
                           padding: EdgeInsets.all(size.width * 0.03),
@@ -189,13 +188,15 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ChoiceChip(
-                                      label: const Text("Can Walk"),
+                                      label: Text(LocaleKeys.can_walk.tr()),
                                       selected: _canWalk,
                                       onSelected: (value) {
                                         setState(() {
                                           _canWalk = value;
-                                          if (_canWalk)
-                                            sitOfCase.add("Can Walk");
+                                          if (_canWalk) {
+                                            sitOfCase
+                                                .add(LocaleKeys.can_walk.tr());
+                                          }
                                         });
                                       },
                                       selectedColor: Constants.blueColor,
@@ -213,13 +214,16 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                       width: size.width * 0.015,
                                     ),
                                     ChoiceChip(
-                                      label: const Text("Chronic Diseases"),
+                                      label: Text(
+                                          LocaleKeys.chronic_diseases.tr()),
                                       selected: _chronicDiseases,
                                       onSelected: (value) {
                                         setState(() {
                                           _chronicDiseases = value;
                                           if (_chronicDiseases) {
-                                            sitOfCase.add("Chronic Diseases");
+                                            sitOfCase.add(LocaleKeys
+                                                .chronic_diseases
+                                                .tr());
                                           }
                                         });
                                       },
@@ -237,13 +241,15 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ChoiceChip(
-                                      label: const Text("FAINTING"),
+                                      label: Text(LocaleKeys.fainting.tr()),
                                       selected: _fainting,
                                       onSelected: (value) {
                                         setState(() {
                                           _fainting = value;
-                                          if (_fainting)
-                                            sitOfCase.add("Fainting");
+                                          if (_fainting) {
+                                            sitOfCase
+                                                .add(LocaleKeys.fainting.tr());
+                                          }
                                         });
                                       },
                                       selectedColor: Constants.blueColor,
@@ -258,14 +264,15 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                       width: size.width * 0.015,
                                     ),
                                     ChoiceChip(
-                                      label: const Text(
-                                          "Patient with Special Needs"),
+                                      label:
+                                          Text(LocaleKeys.special_needs.tr()),
                                       selected: _specialNeeds,
                                       onSelected: (value) {
                                         setState(() {
                                           _specialNeeds = value;
                                           if (_specialNeeds) {
-                                            sitOfCase.add("Special Needs");
+                                            sitOfCase.add(
+                                                LocaleKeys.special_needs.tr());
                                           }
                                         });
                                       },
@@ -283,12 +290,14 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     ChoiceChip(
-                                      label: const Text("Clot"),
+                                      label: Text(LocaleKeys.clot.tr()),
                                       selected: _clot,
                                       onSelected: (value) {
                                         setState(() {
                                           _clot = value;
-                                          if (_clot) sitOfCase.add("Clot");
+                                          if (_clot) {
+                                            sitOfCase.add(LocaleKeys.clot.tr());
+                                          }
                                         });
                                       },
                                       selectedColor: Constants.blueColor,
@@ -303,14 +312,14 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                       width: size.width * 0.015,
                                     ),
                                     ChoiceChip(
-                                      label:
-                                          const Text("CAN'T DIAGNOSE THE CASE"),
+                                      label: Text(LocaleKeys.unknown.tr()),
                                       selected: _unknounCase,
                                       onSelected: (value) {
                                         setState(() {
                                           _unknounCase = value;
                                           if (_unknounCase) {
-                                            sitOfCase.add("Can't Diagnose");
+                                            sitOfCase
+                                                .add(LocaleKeys.unknown.tr());
                                           }
                                         });
                                       },
@@ -344,17 +353,17 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => Success()),
+                                        builder: (context) => const Success()),
                                   );
                                 } else {
-                                  SnackBar snackBar = const SnackBar(
+                                  SnackBar snackBar = SnackBar(
                                     content: Text(
-                                      " You must choose at least one situation of case",
-                                      style: TextStyle(
+                                      LocaleKeys.e_sit.tr(),
+                                      style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    duration: Duration(seconds: 4),
+                                    duration: const Duration(seconds: 4),
                                     elevation: 3,
                                     backgroundColor: Constants.redColor,
                                   );
@@ -363,7 +372,7 @@ class _CompleteAmbulanceRequestState extends State<CompleteAmbulanceRequest> {
                                 }
                               }
                             },
-                            child: const Text("SUBMIT"),
+                            child: Text(LocaleKeys.submit_btn.tr()),
                             style: Constants.redButtonStyles(
                                 size.height * 0.022, size.width * 0.36)),
                       ],

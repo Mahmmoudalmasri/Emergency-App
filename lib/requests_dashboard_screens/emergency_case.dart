@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:emergency_app/tracking.dart';
+import 'package:emergency_app/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 
 class EmergencyCase extends StatefulWidget {
   const EmergencyCase({
@@ -55,7 +56,10 @@ class _EmergencyCaseState extends State<EmergencyCase> {
   getData() {
     FirebaseFirestore.instance
         .collection("emergency")
-        .orderBy("date", descending: false)
+        .orderBy(
+          "date",
+          descending: true,
+        )
         .snapshots()
         .listen((event) {
       event.docs.forEach((element) {
@@ -129,21 +133,21 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Mobile:",
+                                    LocaleKeys.mobile.tr(),
                                     style: detailsStyle,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    "Date:",
+                                    LocaleKeys.date.tr(),
                                     style: detailsStyle,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    "Time:",
+                                    LocaleKeys.time.tr(),
                                     style: detailsStyle,
                                   ),
                                 ],
@@ -349,9 +353,9 @@ class _EmergencyCaseState extends State<EmergencyCase> {
                               //       });
                               //     });
                             },
-                      child: const Text(
-                        "TAKE ACTION",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      child: Text(
+                        LocaleKeys.action_btn.tr(),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       style: emergencyData[index]["status"]
                           ? greyButton(context)

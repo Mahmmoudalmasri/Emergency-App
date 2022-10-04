@@ -1,6 +1,8 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:emergency_app/constants.dart';
 import 'package:emergency_app/screens/dashboard.dart';
 import 'package:emergency_app/screens/home_screen.dart';
+import 'package:emergency_app/translations/locale_keys.g.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -72,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: size.height * 0.01,
                         ),
                         Text(
-                          'Enter username and password\n to Sign in',
+                          LocaleKeys.login_header.tr(),
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
@@ -92,35 +94,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   key: _formKey,
                   child: Column(
                     children: [
-                      Constants.label(
-                          "* E-mail", size.width, size.height, size.width),
+                      Constants.label(LocaleKeys.email.tr(), size.width,
+                          size.height, size.width),
                       TextFormField(
                         controller: _userNameController,
                         validator: (value) {
                           if (value == null || value == "") {
-                            return "Email Field Can't be Empty";
+                            return LocaleKeys.e_empty.tr();
                           } else if (!value.contains("@") ||
                               (!value.contains(".com") &&
                                   !value.contains(".net") &&
                                   !value.contains(".org"))) {
-                            return "Invalid Email Form";
+                            return LocaleKeys.e_email.tr();
                           }
                         },
-                        decoration:
-                            Constants.fieldsDecoration("Enter your Email"),
+                        decoration: Constants.fieldsDecoration(
+                            LocaleKeys.hint_email.tr()),
                       ),
-                      Constants.label(
-                          "* Password", size.width, size.height, size.width),
+                      Constants.label(LocaleKeys.password.tr(), size.width,
+                          size.height, size.width),
                       TextFormField(
                         controller: _passwordController,
                         validator: (value) {
                           if (value == null || value == "") {
-                            return "Password Field Can't be Empty";
+                            return LocaleKeys.e_password.tr();
                           }
                         },
                         obscureText: true,
-                        decoration:
-                            Constants.fieldsDecoration("Enter your Password"),
+                        decoration: Constants.fieldsDecoration(
+                            LocaleKeys.hint_password.tr()),
                       ),
                       SizedBox(
                         height: size.height * 0.03,
@@ -144,9 +146,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             } on FirebaseAuthException catch (e) {
                               String _message = "";
                               if (e.code == 'user-not-found') {
-                                _message = "E-mail isn't correct or not found";
+                                _message = LocaleKeys.e_email.tr();
                               } else if (e.code == 'wrong-password') {
-                                _message = "Incorrect password";
+                                _message = LocaleKeys.e_password.tr();
                               }
                               SnackBar snackBar = SnackBar(
                                 content: Text(
@@ -171,9 +173,9 @@ class _LoginScreenState extends State<LoginScreen> {
                             // );
                           }
                         },
-                        child: const Text(
-                          "LOGIN",
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                        child: Text(
+                          LocaleKeys.login_btn.tr(),
+                          style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         style: Constants.redButtonStyles(
                             size.height * 0.02, size.width * 0.3),
@@ -182,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         height: size.height * 0.03,
                       ),
                       Text(
-                        "By Continuing you agree to the Terms and Conditions",
+                        LocaleKeys.login_agree.tr(),
                         style: TextStyle(
                             color: Colors.grey.shade700,
                             fontSize: size.width * 0.03),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:easy_localization/easy_localization.dart';
+import 'package:emergency_app/translations/locale_keys.g.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -11,45 +12,6 @@ class AmbulanceRequestScreen extends StatefulWidget {
 }
 
 class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
-  List<Map> cases = [
-    {
-      "name": "Mahmmoud Haitham Mohammad Salem",
-      "natID": 9951075493,
-      "age": 27,
-      "mobile": 0798007605,
-      "date": DateFormat.yMMMd().format(DateTime.now()).toString(),
-      "time": DateFormat('h:mm a').format(DateTime.now()).toString(),
-      "status": false
-    },
-    {
-      "name": "Omar Mohammad Khalil Almasri",
-      "natID": 9951075493,
-      "age": 29,
-      "mobile": 0798654654,
-      "date": DateFormat.yMMMd().format(DateTime.now()).toString(),
-      "time": DateFormat('h:mm a').format(DateTime.now()).toString(),
-      "status": true
-    },
-    {
-      "name": "Rama Khaled Mahmmoud Khalel",
-      "natID": 9951075493,
-      "age": 27,
-      "mobile": 0775486315,
-      "date": DateFormat.yMMMd().format(DateTime.now()).toString(),
-      "time": DateFormat('h:mm a').format(DateTime.now()).toString(),
-      "status": true
-    },
-    {
-      "name": "Dina Yousef Mohammad Salem",
-      "natID": "2001154962",
-      "age": 22,
-      "mobile": 0562548624,
-      "date": DateFormat.yMMMd().format(DateTime.now()).toString(),
-      "time": DateFormat('h:mm a').format(DateTime.now()).toString(),
-      "status": false
-    }
-  ];
-
   TextStyle nameStyle = const TextStyle(
     color: Color(0xFF0773DC),
     fontSize: 16,
@@ -71,7 +33,7 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
   ButtonStyle redButton(BuildContext ctx) {
     var size = MediaQuery.of(ctx).size;
     return ElevatedButton.styleFrom(
-        primary: const Color(0xFFE00508),
+        backgroundColor: const Color(0xFFE00508),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25))),
         padding: EdgeInsets.symmetric(
@@ -81,7 +43,7 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
   ButtonStyle greyButton(BuildContext ctx) {
     var size = MediaQuery.of(ctx).size;
     return ElevatedButton.styleFrom(
-        primary: const Color(0xFFC1C1C1),
+        backgroundColor: const Color(0xFFC1C1C1),
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(25))),
         padding: EdgeInsets.symmetric(
@@ -167,35 +129,35 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "National ID:",
+                                    LocaleKeys.natID.tr(),
                                     style: detailsStyle,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    "Age:",
+                                    LocaleKeys.age.tr(),
                                     style: detailsStyle,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    "Mobile:",
+                                    LocaleKeys.mobile.tr(),
                                     style: detailsStyle,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    "Date:",
+                                    LocaleKeys.date.tr(),
                                     style: detailsStyle,
                                   ),
                                   const SizedBox(
                                     height: 10,
                                   ),
                                   Text(
-                                    "Time:",
+                                    LocaleKeys.time.tr(),
                                     style: detailsStyle,
                                   ),
                                 ],
@@ -288,9 +250,9 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
                                           SizedBox(
                                             height: size.height * 0.02,
                                           ),
-                                          const Text(
-                                            "CASE SUMMARY",
-                                            style: TextStyle(
+                                          Text(
+                                            LocaleKeys.case_btn.tr(),
+                                            style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold),
                                           ),
@@ -307,7 +269,8 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
                                           ),
                                           ElevatedButton(
                                             onPressed: () {},
-                                            child: const Text("SEND AMBULANCE"),
+                                            child: Text(
+                                                LocaleKeys.action_btn.tr()),
                                             style: redButton(context),
                                           ),
                                         ],
@@ -318,9 +281,9 @@ class _AmbulanceRequestScreenState extends State<AmbulanceRequestScreen> {
                               );
                             });
                       },
-                      child: const Text(
-                        "SHOW CASE",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                      child: Text(
+                        LocaleKeys.case_btn.tr(),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       ),
                       style: redButton(context),
                     ),
